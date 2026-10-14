@@ -31,10 +31,32 @@
             --spot: 50% 40%;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; cursor: none !important; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        /* Cursor custom activ doar pe PC / dispozitive cu hover */
+        @media (hover: hover) and (pointer: fine) {
+            * { cursor: none !important; }
+            .cursor-dot {
+                position: fixed; top: 0; left: 0; width: 8px; height: 8px;
+                background-color: white; border-radius: 50%; pointer-events: none;
+                z-index: 9999; transform: translate(-50%, -50%);
+                transition: transform 0.1s ease; box-shadow: 0 0 10px var(--accent);
+            }
+            .cursor-ring {
+                position: fixed; top: 0; left: 0; width: 36px; height: 36px;
+                border: 1px solid rgba(234, 179, 8, 0.6); border-radius: 50%; pointer-events: none;
+                z-index: 9998; transform: translate(-50%, -50%);
+                transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
+            }
+            body:active .cursor-ring { width: 24px; height: 24px; background-color: rgba(234, 179, 8, 0.3); }
+        }
+
+        @media (hover: none) or (pointer: coarse) {
+            .cursor-dot, .cursor-ring, .cursor-glow { display: none !important; }
+        }
 
         html { scroll-behavior: smooth; background-color: var(--bg-color); color: var(--text-main); }
-        body { overflow-x: hidden; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        body { overflow-x: hidden; -webkit-font-smoothing: antialiased; }
         ::selection { background: var(--accent); color: white; }
 
         ::-webkit-scrollbar { width: 10px; }
@@ -43,20 +65,6 @@
             background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06));
             border-radius: 100px; border: 2px solid var(--bg-color);
         }
-
-        .cursor-dot {
-            position: fixed; top: 0; left: 0; width: 8px; height: 8px;
-            background-color: white; border-radius: 50%; pointer-events: none;
-            z-index: 9999; transform: translate(-50%, -50%);
-            transition: transform 0.1s ease; box-shadow: 0 0 10px var(--accent);
-        }
-        .cursor-ring {
-            position: fixed; top: 0; left: 0; width: 36px; height: 36px;
-            border: 1px solid rgba(234, 179, 8, 0.6); border-radius: 50%; pointer-events: none;
-            z-index: 9998; transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
-        }
-        body:active .cursor-ring { width: 24px; height: 24px; background-color: rgba(234, 179, 8, 0.3); }
 
         .progress-bar {
             position: fixed; top: 0; left: 0; height: 2.5px; width: 100%;
@@ -78,8 +86,7 @@
         }
         .ambient-blob {
             position: absolute; opacity: 0.4; border-radius: 50%;
-            animation: drift 24s infinite alternate ease-in-out;
-            will-change: transform; transform: translateZ(0);
+            animation: drift 24s infinite alternate ease-in-out; will-change: transform;
         }
         .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: radial-gradient(circle, #3b2a00 0%, transparent 70%); }
         .blob-2 { bottom: -20%; right: -10%; width: 60vw; height: 60vw; background: radial-gradient(circle, #5e3a00 0%, transparent 70%); animation-delay: -10s; }
@@ -108,100 +115,93 @@
             content: ''; position: absolute; top: 0; left: 8%; right: 8%; height: 1px;
             background: linear-gradient(90deg, transparent, var(--glass-spec), transparent); opacity: 0.6;
         }
-        .glass::after {
-            content: ''; position: absolute; inset: 0; border-radius: inherit;
-            background: radial-gradient(420px circle at var(--spot), rgba(255,255,255,0.14), transparent 60%);
-            opacity: 0; transition: opacity 0.4s ease; pointer-events: none;
-        }
-        .glass:hover::after { opacity: 1; }
 
         nav {
             position: fixed; top: 0; left: 50%; transform: translateX(-50%);
-            width: 100%; padding: 22px 6vw; display: flex; justify-content: space-between; align-items: center;
-            z-index: 100; background: rgba(5, 5, 8, 0.35);
+            width: 100%; padding: 18px 6vw; display: flex; justify-content: space-between; align-items: center;
+            z-index: 100; background: rgba(5, 5, 8, 0.65);
             -webkit-backdrop-filter: blur(18px) saturate(160%); backdrop-filter: blur(18px) saturate(160%);
             border-bottom: 1px solid rgba(255,255,255,0.06);
-            transition: padding 0.5s cubic-bezier(0.16,1,0.3,1), border-radius 0.5s cubic-bezier(0.16,1,0.3,1), background 0.5s ease, top 0.5s cubic-bezier(0.16,1,0.3,1), width 0.5s cubic-bezier(0.16,1,0.3,1);
+            transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
         }
         nav.scrolled {
-            top: 14px; width: min(92vw, 980px); padding: 12px 28px; border-radius: 100px;
-            border: 1px solid var(--glass-border-hover); background: rgba(10, 10, 14, 0.55);
+            top: 10px; width: min(94vw, 980px); padding: 12px 24px; border-radius: 100px;
+            border: 1px solid var(--glass-border-hover); background: rgba(10, 10, 14, 0.85);
             box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 12px 34px -12px rgba(0,0,0,0.65);
         }
 
         .logo { font-size: 18px; font-weight: 800; letter-spacing: 2.5px; text-decoration: none; color: white; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
         .logo-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 10px 2px var(--accent-glow); }
-        .nav-links { display: flex; gap: 26px; }
+        
+        .nav-links { display: flex; gap: 24px; align-items: center; }
         .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; transition: color 0.3s ease; position: relative; }
         .nav-links a::after { content: ''; position: absolute; left: 0; bottom: -4px; width: 0; height: 1px; background: var(--accent-2); transition: width 0.3s ease; }
         .nav-links a:hover, .nav-links a.active { color: white; }
         .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
 
+        .nav-actions { display: flex; align-items: center; gap: 12px; }
+        
+        /* Meniu Hamburger mobil */
+        .hamburger {
+            display: none; width: 42px; height: 42px; border-radius: 50%;
+            background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border);
+            align-items: center; justify-content: center; color: white; font-size: 18px;
+            cursor: pointer; transition: background 0.3s;
+        }
+        .hamburger:hover { background: rgba(255,255,255,0.15); }
+
         .btn {
             display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-            padding: 16px 32px; border-radius: 100px; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;
-            text-decoration: none; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); cursor: none;
+            padding: 14px 28px; border-radius: 100px; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;
+            text-decoration: none; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             border: 1px solid transparent; position: relative; overflow: hidden; isolation: isolate;
         }
-        .btn::before {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.55) 50%, transparent 70%);
-            transform: translateX(-120%); transition: transform 0.7s cubic-bezier(0.16,1,0.3,1); z-index: 1;
-        }
-        .btn:hover::before { transform: translateX(120%); }
         .btn-primary {
             background: linear-gradient(180deg, #ffffff, #e7e7ea); color: black;
             box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 10px 24px -8px rgba(255,255,255,0.15);
         }
-        .btn-primary:hover { transform: translateY(-2px) scale(1.02); box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 14px 30px -8px rgba(255,255,255,0.25); }
+        .btn-primary:hover { transform: translateY(-2px); }
         .btn-secondary {
             background: rgba(255, 255, 255, 0.05); color: white; border-color: var(--glass-border);
-            -webkit-backdrop-filter: blur(14px) saturate(150%); backdrop-filter: blur(14px) saturate(150%);
+            -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
         }
-        .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: var(--glass-border-hover); transform: translateY(-2px); }
-        .btn-sm { padding: 10px 22px; font-size: 12px; }
+        .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: var(--glass-border-hover); }
+        .btn-sm { padding: 10px 20px; font-size: 12px; }
 
         .hero {
             min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; padding: 120px 6vw 40px; position: relative;
+            text-align: center; padding: 140px 6vw 60px; position: relative;
         }
 
         .glass-lens {
             position: absolute; top: 50%; left: 50%; width: min(70vw, 720px); height: min(70vw, 720px);
             transform: translate(-50%, -50%); border-radius: 50%; pointer-events: none; z-index: -1;
             background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.10), transparent 55%), radial-gradient(circle at 65% 75%, var(--accent-glow), transparent 60%);
-            -webkit-backdrop-filter: blur(2px) saturate(1.4); backdrop-filter: blur(2px) saturate(1.4);
+            -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
             border: 1px solid rgba(255,255,255,0.08); animation: lens-spin 40s linear infinite;
-        }
-        .glass-lens::after {
-            content: ''; position: absolute; inset: 0; border-radius: 50%;
-            background: conic-gradient(from 0deg, transparent 0deg, rgba(255,255,255,0.35) 8deg, transparent 40deg, transparent 320deg, rgba(255,255,255,0.2) 340deg, transparent 360deg);
         }
         @keyframes lens-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
 
         .shard {
             position: absolute; border-radius: 20px;
             background: linear-gradient(155deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02));
-            border: 1px solid rgba(255,255,255,0.14); -webkit-backdrop-filter: blur(10px) saturate(160%); backdrop-filter: blur(10px) saturate(160%);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 20px 40px -20px rgba(0,0,0,0.6);
-            pointer-events: none; z-index: -1; animation: float-shard 9s ease-in-out infinite; will-change: transform;
+            border: 1px solid rgba(255,255,255,0.14); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+            pointer-events: none; z-index: -1; animation: float-shard 9s ease-in-out infinite;
         }
-        .shard-1 { top: 18%; left: 12%; width: 90px; height: 90px; transform: rotate(-18deg); animation-delay: 0s; }
-        .shard-2 { top: 65%; left: 8%; width: 60px; height: 60px; transform: rotate(12deg); animation-delay: -3s; }
-        .shard-3 { top: 22%; right: 10%; width: 70px; height: 70px; transform: rotate(24deg); animation-delay: -6s; }
-        .shard-4 { top: 68%; right: 14%; width: 50px; height: 50px; transform: rotate(-10deg); animation-delay: -1.5s; }
+        .shard-1 { top: 18%; left: 12%; width: 70px; height: 70px; transform: rotate(-18deg); }
+        .shard-2 { top: 65%; left: 8%; width: 50px; height: 50px; transform: rotate(12deg); animation-delay: -3s; }
+        .shard-3 { top: 22%; right: 10%; width: 60px; height: 60px; transform: rotate(24deg); animation-delay: -6s; }
 
         @keyframes float-shard {
             0%, 100% { translate: 0 0; }
-            50% { translate: 0 -18px; }
+            50% { translate: 0 -14px; }
         }
 
         .tagline {
             display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px;
             background: rgba(234, 179, 8, 0.08); border: 1px solid rgba(234, 179, 8, 0.25);
-            -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
-            color: var(--accent-2); border-radius: 100px; font-size: 12px; font-weight: 700;
-            letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 32px;
+            color: var(--accent-2); border-radius: 100px; font-size: 11px; font-weight: 700;
+            letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 24px;
         }
         .tagline .pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
 
@@ -212,141 +212,110 @@
         }
 
         .hero h1 {
-            font-size: clamp(40px, 7vw, 90px); font-weight: 800; line-height: 1.05; letter-spacing: -0.04em;
-            margin-bottom: 24px; max-width: 900px;
+            font-size: clamp(34px, 6.5vw, 84px); font-weight: 800; line-height: 1.1; letter-spacing: -0.03em;
+            margin-bottom: 20px; max-width: 900px;
             background: linear-gradient(115deg, #FFFFFF 20%, #A1A1AA 40%, #FFFFFF 60%, #A1A1AA 80%);
             background-size: 300% 100%; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             animation: shine-text 8s ease-in-out infinite;
         }
-        @keyframes shine-text {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
+        @keyframes shine-text { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
 
-        .hero p { font-size: clamp(16px, 2vw, 20px); color: var(--text-secondary); max-width: 600px; margin-bottom: 48px; line-height: 1.6; font-weight: 400; }
-        .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+        .hero p { font-size: clamp(15px, 1.8vw, 19px); color: var(--text-secondary); max-width: 600px; margin-bottom: 40px; line-height: 1.6; }
+        .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 500px; }
 
-        .scroll-cue {
-            position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
-            display: flex; flex-direction: column; align-items: center; gap: 8px;
-            color: var(--text-secondary); font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
-            animation: bob 2.4s ease-in-out infinite;
-        }
-        @keyframes bob { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
-
-        .section { padding: 100px 6vw; position: relative; }
+        .section { padding: 90px 6vw; position: relative; }
         .section-header {
-            margin-bottom: 60px; display: flex; justify-content: space-between; align-items: flex-end;
-            border-bottom: 1px solid var(--glass-border); padding-bottom: 30px;
+            margin-bottom: 50px; display: flex; justify-content: space-between; align-items: flex-end;
+            border-bottom: 1px solid var(--glass-border); padding-bottom: 24px; gap: 20px; flex-wrap: wrap;
         }
-        .eyebrow { display: block; font-family: var(--mono); font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent-2); margin-bottom: 14px; }
-        .section-title { font-size: clamp(32px, 4vw, 56px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; }
-        .section-desc { color: var(--text-secondary); max-width: 400px; text-align: right; font-size: 15px; line-height: 1.6; }
+        .eyebrow { display: block; font-family: var(--mono); font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent-2); margin-bottom: 10px; }
+        .section-title { font-size: clamp(28px, 3.8vw, 50px); font-weight: 700; letter-spacing: -0.03em; }
+        .section-desc { color: var(--text-secondary); max-width: 380px; font-size: 15px; line-height: 1.6; }
 
         .grid-layout { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; }
-        .features-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+        .features-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
 
-        .card { 
-            border-radius: 32px; padding: 48px; overflow: hidden; 
-            will-change: transform; transition: transform 0.3s ease-out, border-color 0.5s ease; 
-            transform-style: preserve-3d;
-        }
-        .tilt-card:hover { border-color: var(--glass-border-hover); }
-        .tilt-card > * { transform: translateZ(30px); transition: transform 0.3s; }
-
+        .card { border-radius: 28px; padding: 40px; overflow: hidden; transition: border-color 0.4s ease; }
         .col-about { grid-column: span 7; }
-        .col-stats { grid-column: span 5; display: flex; flex-direction: column; gap: 24px; }
-        .card-stat { border-radius: 32px; padding: 40px; flex: 1; display: flex; flex-direction: column; justify-content: center; will-change: transform; transition: transform 0.5s cubic-bezier(0.16,1,0.3,1); }
-        .card-stat:hover { transform: translateY(-4px); }
-        .stat-value { font-family: var(--mono); font-size: 56px; font-weight: 600; letter-spacing: -2px; line-height: 1; margin-bottom: 10px; color: white; }
-        .stat-label { color: var(--accent); text-transform: uppercase; letter-spacing: 2px; font-size: 13px; font-weight: 700; }
+        .col-stats { grid-column: span 5; display: flex; flex-direction: column; gap: 20px; }
+        .card-stat { border-radius: 28px; padding: 32px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .stat-value { font-family: var(--mono); font-size: 48px; font-weight: 600; letter-spacing: -1.5px; line-height: 1; margin-bottom: 8px; color: white; }
+        .stat-label { color: var(--accent); text-transform: uppercase; letter-spacing: 2px; font-size: 12px; font-weight: 700; }
 
-        .about-text h3 { font-size: 32px; margin-bottom: 24px; font-weight: 700; letter-spacing: -1px; }
-        .about-text p { color: var(--text-secondary); font-size: 16px; line-height: 1.7; margin-bottom: 24px; }
+        .about-text h3 { font-size: 28px; margin-bottom: 20px; font-weight: 700; letter-spacing: -0.5px; }
+        .about-text p { color: var(--text-secondary); font-size: 15px; line-height: 1.7; margin-bottom: 20px; }
 
-        .founders { display: flex; gap: 24px; margin-top: 40px; flex-wrap: wrap; }
-        .founder { display: flex; align-items: center; gap: 16px; }
-        .founder-img { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #3b2a00, #5e3a00); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(234, 179, 8, 0.35); color: var(--accent); font-size: 18px; }
-        .founder-info h4 { font-size: 16px; font-weight: 600; color: white; margin-bottom: 2px; }
-        .founder-info span { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+        .founders { display: flex; gap: 20px; margin-top: 32px; flex-wrap: wrap; }
+        .founder { display: flex; align-items: center; gap: 14px; }
+        .founder-img { width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg, #3b2a00, #5e3a00); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(234, 179, 8, 0.35); color: var(--accent); font-size: 16px; }
+        .founder-info h4 { font-size: 15px; font-weight: 600; color: white; margin-bottom: 2px; }
+        .founder-info span { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
 
         .feature-icon {
-            width: 60px; height: 60px; border-radius: 16px; background: rgba(234, 179, 8, 0.12);
-            border: 1px solid rgba(234, 179, 8, 0.3); box-shadow: inset 0 1px 0 rgba(255,255,255,0.15);
-            display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--accent-2); margin-bottom: 32px;
+            width: 54px; height: 54px; border-radius: 14px; background: rgba(234, 179, 8, 0.12);
+            border: 1px solid rgba(234, 179, 8, 0.3); display: flex; align-items: center; justify-content: center;
+            font-size: 22px; color: var(--accent-2); margin-bottom: 28px;
         }
 
-        .card h3 { font-size: 24px; font-weight: 600; margin-bottom: 16px; letter-spacing: -0.5px; }
-        .card p { color: var(--text-secondary); line-height: 1.6; font-size: 15px; }
+        .card h3 { font-size: 22px; font-weight: 600; margin-bottom: 14px; }
+        .card p { color: var(--text-secondary); line-height: 1.6; font-size: 14px; }
 
         .connect-box {
-            max-width: 1000px; margin: 0 auto; border-radius: 36px; padding: 60px; text-align: center;
+            max-width: 900px; margin: 0 auto; border-radius: 32px; padding: 50px 30px; text-align: center;
             background: linear-gradient(155deg, rgba(234,179,8,0.12), rgba(255,255,255,0.02));
-            border: 1px solid rgba(234,179,8,0.3); position: relative; overflow: hidden;
+            border: 1px solid rgba(234,179,8,0.3);
         }
-        .connect-box h2 { font-size: clamp(28px, 4vw, 38px); font-weight: 800; margin-bottom: 16px; letter-spacing: -0.02em; }
-        .connect-box p { color: var(--text-secondary); font-size: 16px; max-width: 600px; margin: 0 auto 32px; line-height: 1.7; }
+        .connect-box h2 { font-size: clamp(26px, 3.5vw, 36px); font-weight: 800; margin-bottom: 14px; }
+        .connect-box p { color: var(--text-secondary); font-size: 15px; max-width: 540px; margin: 0 auto 28px; line-height: 1.6; }
         .connect-code {
-            display: inline-flex; align-items: center; gap: 14px; background: rgba(0,0,0,0.5);
-            border: 1px solid var(--glass-border); padding: 14px 28px; border-radius: 100px;
-            font-family: var(--mono); font-size: 14px; color: var(--accent-2); margin-bottom: 28px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
+            display: inline-flex; align-items: center; gap: 12px; background: rgba(0,0,0,0.5);
+            border: 1px solid var(--glass-border); padding: 12px 24px; border-radius: 100px;
+            font-family: var(--mono); font-size: 13px; color: var(--accent-2); margin-bottom: 24px;
+            max-width: 100%; overflow-x: auto;
         }
-        .connect-code i { color: white; cursor: pointer; transition: color 0.3s; }
-        .connect-code i:hover { color: var(--accent-2); }
+        .connect-code i { color: white; cursor: pointer; }
 
-        footer { padding: 80px 6vw 40px; border-top: 1px solid var(--glass-border); margin-top: 60px; }
-        .footer-content { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 60px; gap: 40px; }
-        .footer-cta h2 { font-size: 48px; font-weight: 700; margin-bottom: 24px; letter-spacing: -2px; }
-        .footer-links { display: flex; gap: 20px; }
+        footer { padding: 70px 6vw 36px; border-top: 1px solid var(--glass-border); margin-top: 50px; }
+        .footer-content { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 50px; gap: 30px; flex-wrap: wrap; }
+        .footer-cta h2 { font-size: clamp(32px, 4vw, 44px); font-weight: 700; margin-bottom: 20px; }
+        .footer-links { display: flex; gap: 16px; }
         .footer-links a {
-            width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 20px; transition: all 0.4s cubic-bezier(0.16,1,0.3,1); text-decoration: none; overflow: hidden;
+            width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 18px; text-decoration: none; border: 1px solid var(--glass-border);
         }
-        .footer-links a:hover {
-            border-color: var(--accent); color: var(--accent-2); transform: translateY(-3px) rotate(-6deg);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 10px 22px -8px var(--accent-glow);
-        }
+        .footer-bottom { display: flex; justify-content: space-between; padding-top: 30px; border-top: 1px solid var(--glass-border); color: var(--text-secondary); font-size: 13px; font-family: var(--mono); flex-wrap: wrap; gap: 15px; }
 
-        .footer-bottom { display: flex; justify-content: space-between; padding-top: 40px; border-top: 1px solid var(--glass-border); color: var(--text-secondary); font-size: 14px; font-family: var(--mono); flex-wrap: wrap; gap: 15px; }
-
-        /* Animație fluidă la fiecare scroll */
         .fade-up {
-            opacity: 0;
-            transform: translateY(35px) scale(0.97);
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0; transform: translateY(30px) scale(0.98);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
             will-change: opacity, transform;
         }
-        .fade-up.visible {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
+        .fade-up.visible { opacity: 1; transform: translateY(0) scale(1); }
         .delay-1 { transition-delay: 0.1s; }
         .delay-2 { transition-delay: 0.2s; }
-        .delay-3 { transition-delay: 0.3s; }
 
-        @media (max-width: 1024px) {
+        /* Stiluri Mobile & Responsive */
+        @media (max-width: 900px) {
             .col-about, .col-stats { grid-column: span 12; }
-            .col-stats { flex-direction: row; }
-            .section-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+            .col-stats { flex-direction: column; }
+            .section-header { flex-direction: column; align-items: flex-start; }
             .section-desc { text-align: left; }
-            .shard { display: none; }
-            * { cursor: auto !important; }
-            .cursor-dot, .cursor-ring { display: none; }
-        }
-
-        @media (max-width: 768px) {
-            nav { padding: 18px 6vw; }
-            nav.scrolled { width: min(94vw, 980px); }
-            .nav-links { display: none; }
+            .shard, .glass-lens { display: none; }
+            
+            .hamburger { display: flex; }
+            .nav-links {
+                position: absolute; top: 100%; left: 0; right: 0;
+                background: rgba(10, 10, 14, 0.96); -webkit-backdrop-filter: blur(22px); backdrop-filter: blur(22px);
+                border: 1px solid var(--glass-border); border-radius: 24px;
+                flex-direction: column; align-items: center; padding: 28px;
+                gap: 18px; margin: 10px 16px; clip-path: circle(0% at 100% 0%);
+                transition: clip-path 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+                opacity: 0; pointer-events: none; box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+            }
+            .nav-links.open { clip-path: circle(150% at 100% 0%); opacity: 1; pointer-events: auto; }
+            nav.scrolled { width: min(94vw, 980px); padding: 10px 20px; }
             .hero-actions { flex-direction: column; width: 100%; }
             .btn { width: 100%; }
-            .col-stats { flex-direction: column; }
-            .founders { flex-direction: column; align-items: flex-start; }
-            .footer-content { flex-direction: column; align-items: flex-start; gap: 40px; }
-            .footer-bottom { flex-direction: column; gap: 20px; text-align: center; }
-            .footer-cta h2 { font-size: 36px; }
-            .card, .connect-box { padding: 32px; }
         }
     </style>
 </head>
@@ -366,7 +335,7 @@
 
     <nav id="nav">
         <a href="index.html" class="logo">Sun România <div class="logo-dot"></div></a>
-        <div class="nav-links">
+        <div class="nav-links" id="navLinks">
             <a href="index.html" class="active">Acasă</a>
             <a href="#despre">Despre</a>
             <a href="#sisteme">Sisteme</a>
@@ -374,7 +343,10 @@
             <a href="status.html">Status</a>
             <a href="regulament.html">Regulament</a>
         </div>
-        <a href="https://discord.gg/YbYQ6tbK8y" target="_blank" class="btn btn-primary btn-sm">Discord</a>
+        <div class="nav-actions">
+            <a href="https://discord.gg/YbYQ6tbK8y" target="_blank" class="btn btn-primary btn-sm">Discord</a>
+            <div class="hamburger" id="hamburger"><i class="fa-solid fa-bars"></i></div>
+        </div>
     </nav>
 
     <section id="acasa" class="hero">
@@ -382,17 +354,14 @@
         <div class="shard shard-1"></div>
         <div class="shard shard-2"></div>
         <div class="shard shard-3"></div>
-        <div class="shard shard-4"></div>
 
         <div class="tagline fade-up"><span class="pulse"></span>ACCES LIBER • FĂRĂ APLICAȚII</div>
         <h1 class="fade-up delay-1">Bine ai venit la <span>Sun România Roleplay</span></h1>
         <p class="fade-up delay-2">Un oraș construit pentru pasionații de povești captivante, imersiune maximă și comunitate unită. Intră direct în acțiune fără birocrație sau interviuri inutile.</p>
-        <div class="hero-actions fade-up delay-3">
+        <div class="hero-actions fade-up delay-2">
             <a href="#conectare" class="btn btn-primary"><i class="fa-solid fa-gamepad"></i> Intră pe Server</a>
-            <a href="regulament.html" class="btn btn-secondary"><i class="fa-solid fa-book-open"></i> Citește Regulamentul</a>
+            <a href="regulament.html" class="btn btn-secondary"><i class="fa-solid fa-book-open"></i> Regulament</a>
         </div>
-
-        <div class="scroll-cue"><span>Scroll</span><i class="fa-solid fa-chevron-down"></i></div>
     </section>
 
     <section id="despre" class="section">
@@ -405,7 +374,7 @@
         </div>
 
         <div class="grid-layout">
-            <div class="card glass tilt-card col-about fade-up">
+            <div class="card glass col-about fade-up">
                 <div class="about-text">
                     <h3>Povestea Sun România</h3>
                     <p>Sun România Roleplay a luat naștere din dorința de a oferi o experiență autentică, matură și complet captivantă. Ne-am săturat de serverele unde calitatea este lăsată pe locul doi și am decis să construim locul la care am visat mereu.</p>
@@ -424,7 +393,7 @@
                         <div class="founder-img"><i class="fa-solid fa-shield-halved"></i></div>
                         <div class="founder-info">
                             <h4>Maxalbe23</h4>
-                            <span>Fondator • Developer • ID -1</span>
+                            <span>Fondator • Developer</span>
                         </div>
                     </div>
                 </div>
@@ -453,34 +422,34 @@
         </div>
 
         <div class="features-grid">
-            <div class="card glass tilt-card fade-up">
+            <div class="card glass fade-up">
                 <div class="feature-icon"><i class="fa-solid fa-rocket"></i></div>
-                <h3>Acces Instant (Fără Bariere)</h3>
-                <p>Fără formulare obositoare sau timpi de așteptare. Serverul are acces liber pentru toți jucătorii care respectă regulile de bun-simț și imersiune.</p>
+                <h3>Acces Instant</h3>
+                <p>Fără formulare obositoare sau timpi de așteptare. Serverul are acces liber pentru toți jucătorii care respectă regulile de bun-simț.</p>
             </div>
-            <div class="card glass tilt-card fade-up delay-1">
+            <div class="card glass fade-up delay-1">
                 <div class="feature-icon"><i class="fa-solid fa-scale-balanced"></i></div>
                 <h3>Economie Echilibrată</h3>
-                <p>Sistem economic gândit în detaliu pentru a oferi o progresie naturală, afaceri dinamice, joburi legale variate și oportunități extinse pentru mediul ilegal.</p>
+                <p>Sistem economic gândit în detaliu pentru o progresie naturală, afaceri dinamice și oportunități extinse pentru mediul ilegal.</p>
             </div>
-            <div class="card glass tilt-card fade-up delay-2">
+            <div class="card glass fade-up delay-2">
                 <div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
-                <h3>Staff Activ & Implicat</h3>
-                <p>Echipă administrativă pregătită să sprijine comunitatea 24/7, să asigure respectarea regulamentului și să ofere suport prompt pe canalele dedicate.</p>
+                <h3>Staff Activ</h3>
+                <p>Echipă administrativă pregătită să sprijine comunitatea 24/7 și să asigure respectarea regulamentului.</p>
             </div>
         </div>
     </section>
 
     <section id="conectare" class="section">
-        <div class="connect-box glass fade-up tilt-card">
+        <div class="connect-box glass fade-up">
             <h2>Pregătit de Aventură?</h2>
             <p>Conectează-te acum în oraș prin FiveM și începe-ți propria poveste alături de noi.</p>
             <div class="connect-code">
                 <span>connect play.sunromania.ro</span>
-                <i class="fa-solid fa-copy" title="Copiază IP-ul" onclick="navigator.clipboard.writeText('connect play.sunromania.ro'); alert('IP copiat cu succes!');"></i>
+                <i class="fa-solid fa-copy" title="Copiază IP" onclick="navigator.clipboard.writeText('connect play.sunromania.ro'); alert('IP copiat cu succes!');"></i>
             </div>
             <div>
-                <a href="https://discord.gg/YbYQ6tbK8y" target="_blank" class="btn btn-primary"><i class="fa-brands fa-discord"></i> Alătură-te pe Discord</a>
+                <a href="https://discord.gg/YbYQ6tbK8y" target="_blank" class="btn btn-primary"><i class="fa-brands fa-discord"></i> Discord Comunitate</a>
             </div>
         </div>
     </section>
@@ -492,8 +461,8 @@
                 <a href="https://discord.gg/YbYQ6tbK8y" target="_blank" class="btn btn-primary">Alătură-te pe Discord</a>
             </div>
             <div class="footer-links">
-                <a href="https://discord.gg/YbYQ6tbK8y" target="_blank" class="glass" style="border-radius: 50%;"><i class="fa-brands fa-discord"></i></a>
-                <a href="https://www.tiktok.com/@maxalbe_ae" target="_blank" class="glass" style="border-radius: 50%;"><i class="fa-brands fa-tiktok"></i></a>
+                <a href="https://discord.gg/YbYQ6tbK8y" target="_blank" class="glass"><i class="fa-brands fa-discord"></i></a>
+                <a href="https://www.tiktok.com/@maxalbe_ae" target="_blank" class="glass"><i class="fa-brands fa-tiktok"></i></a>
             </div>
         </div>
 
@@ -505,28 +474,56 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            const hasHover = window.matchMedia('(hover: hover)').matches;
+            // Meniu hamburger mobil
+            const hamburger = document.getElementById('hamburger');
+            const navLinks = document.getElementById('navLinks');
+            if (hamburger && navLinks) {
+                hamburger.addEventListener('click', () => {
+                    navLinks.classList.toggle('open');
+                    const icon = hamburger.querySelector('i');
+                    icon.classList.toggle('fa-bars');
+                    icon.classList.toggle('fa-xmark');
+                });
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        navLinks.classList.remove('open');
+                        const icon = hamburger.querySelector('i');
+                        icon.classList.add('fa-bars');
+                        icon.classList.remove('fa-xmark');
+                    });
+                });
+            }
 
-            const dot = document.getElementById('cursorDot');
-            const ring = document.getElementById('cursorRing');
-            let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+            // Cursor custom pe desktop
+            if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+                const dot = document.getElementById('cursorDot');
+                const ring = document.getElementById('cursorRing');
+                let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
 
-            window.addEventListener('pointermove', (e) => {
-                mouseX = e.clientX;
-                mouseY = e.clientY;
-                dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
-            });
+                window.addEventListener('pointermove', (e) => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                    dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+                });
 
-            const renderCursor = () => {
-                ringX += (mouseX - ringX) * 0.15;
-                ringY += (mouseY - ringY) * 0.15;
-                ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
+                const renderCursor = () => {
+                    ringX += (mouseX - ringX) * 0.15;
+                    ringY += (mouseY - ringY) * 0.15;
+                    ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
+                    requestAnimationFrame(renderCursor);
+                };
                 requestAnimationFrame(renderCursor);
-            };
-            requestAnimationFrame(renderCursor);
 
-            // Animație activată la fiecare scroll (toggle la intarea și ieșirea din ecran)
+                const cursorGlow = document.getElementById('cursorGlow');
+                document.addEventListener('pointermove', (e) => {
+                    requestAnimationFrame(() => {
+                        cursorGlow.style.setProperty('--gx', e.clientX + 'px');
+                        cursorGlow.style.setProperty('--gy', e.clientY + 'px');
+                    });
+                }, { passive: true });
+            }
+
+            // Observer animatii scroll
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -535,75 +532,20 @@
                         entry.target.classList.remove('visible');
                     }
                 });
-            }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+            }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
 
             document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
             const nav = document.getElementById('nav');
             const progress = document.getElementById('progress');
-            let scrollTicking = false;
-
-            const updateOnScroll = () => {
-                nav.classList.toggle('scrolled', window.scrollY > 60);
-                const max = document.documentElement.scrollHeight - window.innerHeight;
-                const pct = max > 0 ? window.scrollY / max : 0;
-                progress.style.transform = `scaleX(${pct})`;
-                scrollTicking = false;
-            };
-
             window.addEventListener('scroll', () => {
-                if (!scrollTicking) {
-                    requestAnimationFrame(updateOnScroll);
-                    scrollTicking = true;
-                }
+                requestAnimationFrame(() => {
+                    nav.classList.toggle('scrolled', window.scrollY > 50);
+                    const max = document.documentElement.scrollHeight - window.innerHeight;
+                    const pct = max > 0 ? window.scrollY / max : 0;
+                    progress.style.transform = `scaleX(${pct})`;
+                });
             }, { passive: true });
-            updateOnScroll();
-
-            if (!reduceMotion && hasHover) {
-                const glassEls = document.querySelectorAll('.glass');
-                const cursorGlow = document.getElementById('cursorGlow');
-                let pending = null;
-
-                document.addEventListener('pointermove', (e) => {
-                    pending = e;
-                    requestAnimationFrame(() => {
-                        if (!pending) return;
-                        cursorGlow.style.setProperty('--gx', pending.clientX + 'px');
-                        cursorGlow.style.setProperty('--gy', pending.clientY + 'px');
-                        pending = null;
-                    });
-                }, { passive: true });
-
-                glassEls.forEach(el => {
-                    el.addEventListener('pointermove', (e) => {
-                        const rect = el.getBoundingClientRect();
-                        const x = ((e.clientX - rect.left) / rect.width) * 100;
-                        const y = ((e.clientY - rect.top) / rect.height) * 100;
-                        el.style.setProperty('--spot', `${x}% ${y}%`);
-                    });
-                });
-
-                const tiltCards = document.querySelectorAll('.tilt-card');
-                tiltCards.forEach(card => {
-                    card.addEventListener('pointermove', (e) => {
-                        const rect = card.getBoundingClientRect();
-                        const x = e.clientX - rect.left;
-                        const y = e.clientY - rect.top;
-                        const centerX = rect.width / 2;
-                        const centerY = rect.height / 2;
-                        const rotateX = ((y - centerY) / centerY) * -4;
-                        const rotateY = ((x - centerX) / centerX) * 4;
-                        card.style.transform = `perspective(1000px) translateY(-6px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-                    });
-
-                    card.addEventListener('pointerleave', () => {
-                        card.style.transform = '';
-                    });
-                });
-
-            } else {
-                document.getElementById('cursorGlow').style.display = 'none';
-            }
         });
     </script>
 </body>
