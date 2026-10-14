@@ -33,7 +33,6 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
 
-        /* Cursor custom activ doar pe PC / dispozitive cu hover */
         @media (hover: hover) and (pointer: fine) {
             * { cursor: none !important; }
             .cursor-dot {
@@ -46,11 +45,9 @@
                 position: fixed; top: 0; left: 0; width: 36px; height: 36px;
                 border: 1px solid rgba(234, 179, 8, 0.6); border-radius: 50%; pointer-events: none;
                 z-index: 9998; transform: translate(-50%, -50%);
-                transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
+                transition: width 0.2s, height 0.2s;
             }
-            body:active .cursor-ring { width: 24px; height: 24px; background-color: rgba(234, 179, 8, 0.3); }
         }
-
         @media (hover: none) or (pointer: coarse) {
             .cursor-dot, .cursor-ring, .cursor-glow { display: none !important; }
         }
@@ -141,7 +138,6 @@
 
         .nav-actions { display: flex; align-items: center; gap: 12px; }
         
-        /* Meniu Hamburger mobil */
         .hamburger {
             display: none; width: 42px; height: 42px; border-radius: 50%;
             background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border);
@@ -294,7 +290,6 @@
         .delay-1 { transition-delay: 0.1s; }
         .delay-2 { transition-delay: 0.2s; }
 
-        /* Stiluri Mobile & Responsive */
         @media (max-width: 900px) {
             .col-about, .col-stats { grid-column: span 12; }
             .col-stats { flex-direction: column; }
@@ -355,11 +350,11 @@
         <div class="shard shard-2"></div>
         <div class="shard shard-3"></div>
 
-        <div class="tagline fade-up"><span class="pulse"></span>ACCES LIBER • FĂRĂ APLICAȚII</div>
+        <div class="tagline fade-up"><span class="pulse"></span>COMING SOON • 25 DECEMBRIE (CRĂCIUN)</div>
         <h1 class="fade-up delay-1">Bine ai venit la <span>Sun România Roleplay</span></h1>
-        <p class="fade-up delay-2">Un oraș construit pentru pasionații de povești captivante, imersiune maximă și comunitate unită. Intră direct în acțiune fără birocrație sau interviuri inutile.</p>
+        <p class="fade-up delay-2">Un oraș construit pentru pasionații de povești captivante, imersiune maximă și comunitate unită. Deschidem oficial porțile de Crăciun!</p>
         <div class="hero-actions fade-up delay-2">
-            <a href="#conectare" class="btn btn-primary"><i class="fa-solid fa-gamepad"></i> Intră pe Server</a>
+            <a href="https://discord.gg/YbYQ6tbK8y" target="_blank" class="btn btn-primary"><i class="fa-brands fa-discord"></i> Intră pe Discord</a>
             <a href="regulament.html" class="btn btn-secondary"><i class="fa-solid fa-book-open"></i> Regulament</a>
         </div>
     </section>
@@ -401,8 +396,8 @@
 
             <div class="col-stats fade-up delay-1">
                 <div class="card-stat glass">
-                    <div class="stat-value">EST 2024</div>
-                    <div class="stat-label">Anul Înființării</div>
+                    <div class="stat-value">25 DEC</div>
+                    <div class="stat-label">Lansare Oficială</div>
                 </div>
                 <div class="card-stat glass" style="--glass-fill: linear-gradient(155deg, rgba(234,179,8,0.14), rgba(234,179,8,0.03) 45%, rgba(234,179,8,0.06)); border-color: rgba(234, 179, 8, 0.2);">
                     <div class="stat-value" style="color: var(--accent);">Advanced</div>
@@ -442,11 +437,10 @@
 
     <section id="conectare" class="section">
         <div class="connect-box glass fade-up">
-            <h2>Pregătit de Aventură?</h2>
-            <p>Conectează-te acum în oraș prin FiveM și începe-ți propria poveste alături de noi.</p>
+            <h2>Pregătit de Lansare?</h2>
+            <p>Ne vedem în oraș pe 25 decembrie (de Crăciun)! Până atunci, fii la curent pe Discord.</p>
             <div class="connect-code">
-                <span>connect play.sunromania.ro</span>
-                <i class="fa-solid fa-copy" title="Copiază IP" onclick="navigator.clipboard.writeText('connect play.sunromania.ro'); alert('IP copiat cu succes!');"></i>
+                <span>Lansare: 25 Decembrie 2026 (Crăciun)</span>
             </div>
             <div>
                 <a href="https://discord.gg/YbYQ6tbK8y" target="_blank" class="btn btn-primary"><i class="fa-brands fa-discord"></i> Discord Comunitate</a>
@@ -457,7 +451,7 @@
     <footer>
         <div class="footer-content fade-up">
             <div class="footer-cta">
-                <h2>Ești pregătit?</h2>
+                <h2>Ne vedem de Crăciun!</h2>
                 <a href="https://discord.gg/YbYQ6tbK8y" target="_blank" class="btn btn-primary">Alătură-te pe Discord</a>
             </div>
             <div class="footer-links">
@@ -474,7 +468,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Meniu hamburger mobil
             const hamburger = document.getElementById('hamburger');
             const navLinks = document.getElementById('navLinks');
             if (hamburger && navLinks) {
@@ -494,7 +487,6 @@
                 });
             }
 
-            // Cursor custom pe desktop
             if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
                 const dot = document.getElementById('cursorDot');
                 const ring = document.getElementById('cursorRing');
@@ -523,14 +515,10 @@
                 }, { passive: true });
             }
 
-            // Observer animatii scroll
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    } else {
-                        entry.target.classList.remove('visible');
-                    }
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                    else entry.target.classList.remove('visible');
                 });
             }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
 
