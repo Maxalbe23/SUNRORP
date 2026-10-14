@@ -130,12 +130,18 @@
 
         .section { padding: 30px 6vw 100px; position: relative; }
         .status-box { max-width: 750px; margin: 0 auto; border-radius: 28px; padding: 40px 30px; text-align: center; }
-        .status-indicator { display: inline-flex; align-items: center; gap: 10px; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); color: #4ade80; padding: 8px 18px; border-radius: 100px; font-family: var(--mono); font-size: 13px; font-weight: 600; margin-bottom: 20px; }
-        .status-indicator span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; box-shadow: 0 0 10px #4ade80; }
+        
+        .status-indicator { 
+            display: inline-flex; align-items: center; gap: 10px; 
+            background: rgba(234, 179, 8, 0.12); border: 1px solid rgba(234, 179, 8, 0.35); 
+            color: var(--accent-2); padding: 8px 20px; border-radius: 100px; 
+            font-family: var(--mono); font-size: 13px; font-weight: 600; margin-bottom: 20px; 
+        }
+        .status-indicator span { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 10px var(--accent); }
         
         .status-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-top: 24px; }
         .stat-card { background: rgba(0, 0, 0, 0.3); border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px; }
-        .stat-value { font-family: var(--mono); font-size: 26px; font-weight: 700; color: white; margin-bottom: 4px; }
+        .stat-value { font-family: var(--mono); font-size: 24px; font-weight: 700; color: white; margin-bottom: 4px; }
         .stat-label { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
 
         footer { padding: 50px 6vw; border-top: 1px solid var(--glass-border); text-align: center; color: var(--text-secondary); font-size: 13px; font-family: var(--mono); }
@@ -196,17 +202,17 @@
 
     <section class="section">
         <div class="status-box glass fade-up">
-            <div class="status-indicator"><span></span> Server Online & Operativ</div>
-            <p style="color: var(--text-secondary); line-height: 1.6; font-size: 14px; margin-bottom: 20px;">Toate serviciile orașului Sun România funcționează la parametri optimi. Conexiunea FiveM este stabilă.</p>
+            <div class="status-indicator"><span></span> Coming Soon • 25 Decembrie (Crăciun)</div>
+            <p style="color: var(--text-secondary); line-height: 1.6; font-size: 14px; margin-bottom: 20px;">Pregătirile sunt în curs. Orașul Sun România se va deschide oficial de Crăciun!</p>
             
             <div class="status-stats">
                 <div class="stat-card">
-                    <div class="stat-value">64 / 128</div>
-                    <div class="stat-label">Jucători Activi</div>
+                    <div class="stat-value">25 Dec</div>
+                    <div class="stat-label">Data Lansării</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">12 ms</div>
-                    <div class="stat-label">Latență (Ping)</div>
+                    <div class="stat-value">Pregătiri</div>
+                    <div class="stat-label">Stare Sistem</div>
                 </div>
             </div>
         </div>
